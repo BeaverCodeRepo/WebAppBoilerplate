@@ -3,14 +3,14 @@
   "editor.guides.bracketPairs": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": [
-    "source.fixAll.eslint"
-  ],
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "vue"
-  ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "editor.codeActionsOnSave": ["source.fixAll.eslint"],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "azureFunctions.deploySubpath": "api",
+  "azureFunctions.postDeployTask": "npm install (functions)",
+  "azureFunctions.projectLanguage": "TypeScript",
+  "azureFunctions.projectRuntime": "~4",
+  "debug.internalConsoleOptions": "neverOpen",
+  "azureFunctions.projectLanguageModel": 4,
+  "azureFunctions.preDeployTask": "npm prune (functions)"
 }
