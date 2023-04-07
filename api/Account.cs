@@ -10,26 +10,32 @@ using Newtonsoft.Json;
 
 namespace WebAppBoilerplate.Account
 {
-    public static class Account
+  public static class Account
+  {
+    [FunctionName("Account")]
+    public static async Task<IActionResult> Run(
+        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+        ILogger log)
     {
-        [FunctionName("Account")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+      var authResult = await AuthMiddleware.Authenticate(req);
+      if (authResult != null)
+      {
+        return authResult;
+      }
 
-            string name = req.Query["name"];
+      log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+      string name = req.Query["name"];
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+      string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+      dynamic data = JsonConvert.DeserializeObject(requestBody);
+      name = name ?? data?.name;
 
-            return new OkObjectResult(responseMessage);
-        }
+      string responseMessage = string.IsNullOrEmpty(name)
+          ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
+          : $"Hello, {name}. This HTTP triggered function executed successfully.";
+
+      return new OkObjectResult(responseMessage);
     }
+  }
 }
